@@ -57,6 +57,8 @@ public class ChifaerActivity extends Activity {
 	         switch (msg.what) { 
 		case ChifaerActivity.GUI_STOP_NOTIFIER:
 			//loadmain();
+			
+			//test
 			splash=(LinearLayout)findViewById(R.id.splashscreen);
 			splash.setVisibility(View.GONE); 
 			//requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
