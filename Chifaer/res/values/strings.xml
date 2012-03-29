@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">chifaer!</string>
+    <string name="app_name">吃法儿</string>
+    <string name="ChifaerURL">www.chifaer.com</string>
+    <string name="menu_food">吃什么</string>
+	<string name="menu_buy">买什么</string>
+	<string name="menu_diary">美食记</string>
+	<string name="menu_user">个人中心</string>
+	<string name="menu_about">关于我们</string>
+	<string name="menu_noun">名词解释</string>
+</resources>

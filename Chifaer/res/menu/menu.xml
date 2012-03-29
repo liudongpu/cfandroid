@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item 
+    android:title="@string/menu_food" 
+    android:icon="@drawable/menu_food"
+    android:id="@+id/item01">
+  </item>
+  <item 
+    android:id="@+id/item02" 
+    android:icon="@drawable/menu_buy"
+    android:title="@string/menu_buy">
+  </item>
+  <item 
+    android:title="@string/menu_diary" 
+    android:icon="@drawable/menu_diary"
+    android:id="@+id/item03">
+  </item>
+  <item 
+    android:title="@string/menu_user" 
+    android:icon="@drawable/menu_user"
+    android:id="@+id/item04">
+  </item>    
+  <item 
+    android:title="@string/menu_about" 
+    android:icon="@android:drawable/ic_menu_info_details"
+    android:id="@+id/item05">
+  </item>
+  <item 
+    android:title="@string/menu_noun" 
+    android:icon="@drawable/menu_noun"
+    android:id="@+id/item06">
+  </item> 
+</menu>
