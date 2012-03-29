@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -26,9 +27,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,16 +34,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.webkit.WebChromeClient;
+import android.view.View.OnTouchListener;
+
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-public class ChifaerActivity extends Activity {
+
+public class ChifaerActivity extends Activity  {
     /** Called when the activity is first created. */
 	WebView wv;
 	ProgressDialog pd;
@@ -58,8 +55,6 @@ public class ChifaerActivity extends Activity {
 		case ChifaerActivity.GUI_STOP_NOTIFIER:
 			//loadmain();
 			
-			//test
-			//
 			splash=(LinearLayout)findViewById(R.id.splashscreen);
 			splash.setVisibility(View.GONE); 
 			//requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -90,12 +85,12 @@ public class ChifaerActivity extends Activity {
 		        localityString=getLocality(piplString.split(",")[0],piplString.split(",")[1]);
 		        String pt="null";
 		        pt=NetworkMethod(ChifaerActivity.this);
-		        String otherUrlString="?pw="+String.valueOf(screenWidth)+"&ph="+String.valueOf(screenHeight)+"&pl="+localityString+"&pt="+pt;
+		        String otherUrlString="?pf=ad&pw="+String.valueOf(screenWidth)+"&ph="+String.valueOf(screenHeight)+"&pl="+localityString+"&pt="+pt;
 		        //String otherUrlString="?pw="+String.valueOf(screenWidth)+"&ph="+String.valueOf(screenHeight)+"&pi="+piplString+"&pt="+NetworkMethod(ChifaerActivity.this);
-		        //loadurl(wv,"http://192.168.1.200/mobile/"+otherUrlString);
-		        //loadurl(wv,"http://www.chifaer.com/mobile/"+otherUrlString);
+		        //loadurl(wv,"http://192.168.1.200/mobile/"+otherUrlString+"&t=test");
+		        loadurl(wv,"http://www.chifaer.com/mobile/"+otherUrlString);
 		        //loadurl(wv,"http://www.chifaer.com/mobile/?pw=480&ph=800&pl=&pt=WIFI");
-		        loadurl(wv,"http://www.baidu.com");
+		        //loadurl(wv,"http://www.baidu.com");
 		        }
 				//Chifaer2Activity.this.splashHandler.sendMessage(m);
 				splashHandler.sendMessageDelayed(m, SPLASHTIME);  
@@ -110,6 +105,7 @@ public class ChifaerActivity extends Activity {
         wv.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         wv.setScrollBarStyle(0);//滚动条风格，为0就是不给滚动条留空间，滚动条覆盖在网页上
         
+        
         wv.setWebViewClient(new WebViewClient(){   
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
             	loadurl(view,url);//载入网页
@@ -117,6 +113,10 @@ public class ChifaerActivity extends Activity {
             }//重写点击动作,用webview载入
  
         });
+        
+        wv.setOnTouchListener(webViewToch);
+     
+        
  
     }
     public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回键
@@ -230,6 +230,8 @@ public class ChifaerActivity extends Activity {
         String contextService=Context.LOCATION_SERVICE;
         //通过系统服务，取得LocationManager对象
         loctionManager=(LocationManager) getSystemService(contextService);
+        
+        
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);//高精度
         criteria.setAltitudeRequired(false);//不要求海拔
@@ -441,5 +443,76 @@ public boolean onOptionsItemSelected(MenuItem item) {
         return true;
 	//return super.onOptionsItemSelected(item);
 }
+
+
+
+private OnTouchListener webViewToch=new OnTouchListener()
+{
+
+float x_temp01 = 0.0f;
+float y_temp01 = 0.0f;
+
+float x_temp02 = 0.0f;
+float y_temp02 = 0.0f; 
+
+@Override  
+public boolean onTouch(View v, MotionEvent event)
+{
+	//wv.loadUrl("javascript:KeyMobileShow('left')");
+    //获得当前坐标
+        float x = event.getX();
+        float y = event.getY();
+        
+        wv.loadUrl("javascript:KeyCommon.D('touch','"+event.getAction()+"')");
+        
+        switch(event.getAction())
+        {
+                case MotionEvent.ACTION_DOWN: 
+                {
+                    x_temp01 = x;
+                    y_temp01 = y;
+                }
+                break;
+                case MotionEvent.ACTION_UP: 
+                {
+                    x_temp02 = x;
+                    y_temp02 = y;
+                   
+                    if(x_temp01!=0 && y_temp01!=0)//
+                    {
+                            // 比较x_temp01和x_temp02
+                            // x_temp01>x_temp02         //向左
+                            // x_temp01==x_temp02         //竖直方向或者没动
+                            // x_temp01<x_temp02         //向右
+                            
+                            if(x_temp01>x_temp02+80)//向左
+                            {
+                                    //移动了x_temp01-x_temp02
+                            	
+                            	wv.loadUrl("javascript:KeyMobileShow('left')");
+                            }
+                            
+                            if(x_temp01<x_temp02-80)//向右
+                            {
+                                    //移动了x_temp02-x_temp01
+                            	
+                            	wv.loadUrl("javascript:KeyMobileShow('right')");
+                            }
+                    }
+                }
+                break;
+                case MotionEvent.ACTION_MOVE:
+                {
+                        
+                }
+                break;
+
+        }
+        //return super.onTouchEvent(event);
+        return false;
+}
+};
+
+
 
 }
