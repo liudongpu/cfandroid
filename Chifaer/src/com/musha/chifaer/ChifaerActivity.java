@@ -59,6 +59,7 @@ public class ChifaerActivity extends Activity {
 			//loadmain();
 			
 			//test
+			//
 			splash=(LinearLayout)findViewById(R.id.splashscreen);
 			splash.setVisibility(View.GONE); 
 			//requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
